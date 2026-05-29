@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiosque PDV - O Sistema Definitivo para seu Restaurante</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons (para ícones bonitos) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        :root {
+            --primary: #ff4757;
+            --primary-glow: rgba(255, 71, 87, 0.4);
+            --secondary: #ffd32a;
+            --dark-bg: #0f1115;
+            --card-bg: #1e222a;
+            --text-main: #ffffff;
+            --text-muted: #a4b0be;
+            --success: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 4rem 2rem 2rem;
+            background: radial-gradient(circle at 50% -20%, #2f3542 0%, var(--dark-bg) 60%);
+            text-align: center;
+        }
+
+        .badge {
+            background: rgba(255, 211, 42, 0.15);
+            color: var(--secondary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 211, 42, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            background: linear-gradient(to right, #ffffff, #a4b0be);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, var(--primary), #ffa502);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        /* Carrossel de Imagens */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px var(--primary-glow);
+            overflow: hidden;
+            margin-bottom: 3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: contain;
+            background-color: var(--dark-bg);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .carousel-caption {
+            padding: 1.5rem;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+        }
+
+        .carousel-caption h3 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary);
+        }
+
+        .carousel-prev { left: 15px; }
+        .carousel-next { right: 15px; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding-bottom: 1.5rem;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        /* Oferta e Cronômetro */
+        .offer-section {
+            background: linear-gradient(135deg, var(--card-bg), #111419);
+            border: 1px solid rgba(255,71,87,0.3);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin: 0 auto 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .price-box {
+            margin-bottom: 2rem;
+        }
+
+        .price-old {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .price-new {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: 'Outfit', sans-serif;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            line-height: 1;
+        }
+        
+        .price-new small {
+            font-size: 1.5rem;
+            align-self: flex-start;
+            margin-top: 0.5rem;
+        }
+
+        /* Cronômetro */
+        .scarcity-text {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .time-box {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 80px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .time-box label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        /* Botão CTA */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), #ff6b81);
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 800;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px var(--primary-glow);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 35px var(--primary-glow);
+        }
+
+        .cta-subtext {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Benefícios / Features */
+        .features {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 211, 42, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 211, 42, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 211, 42, 0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .price-new { font-size: 3rem; }
+            .countdown { gap: 0.5rem; }
+            .time-box { min-width: 70px; padding: 0.8rem; }
+            .time-box span { font-size: 2rem; }
+            .carousel-btn { width: 30px; height: 30px; font-size: 1rem; }
+        }
+        /* Botão Flutuante do WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #1ebc5a;
+        }
+        
+        .whatsapp-float svg {
+            width: 35px;
+            height: 35px;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 55px;
+                height: 55px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .whatsapp-float svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="badge">🔥 Oferta Especial de Lançamento</div>
+        
+        <h1>Acabe com a confusão nos pedidos e <span>Acelere seu Atendimento</span></h1>
+        <p>O PDV mais simples e rápido para Bares, Quiosques e Restaurantes. Funciona 100% offline, os garçons atendem pelo celular e a impressora na cozinha imprime tudo sozinha!</p>
+
+        <!-- Carrossel de Imagens do Sistema -->
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <div class="carousel-container" id="carousel">
+                <!-- Slide 1 -->
+                <div class="carousel-slide">
+                    <img src="assets/img1.png" alt="Dashboard Administrativo">
+                    <div class="carousel-caption">
+                        <h3>Dashboard Administrativo</h3>
+                        <p>Acesse rapidamente todos os módulos e configurações em um painel central elegante e intuitivo.</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <img src="assets/img2.png" alt="Configurações do Estabelecimento">
+                    <div class="carousel-caption">
+                        <h3>Configurações do Estabelecimento</h3>
+                        <p>Configure taxas de serviço, couvert artístico e os dados da sua loja de forma simplificada.</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <img src="assets/img3.png" alt="Gerenciar Produtos">
+                    <div class="carousel-caption">
+                        <h3>Controle de Cardápio</h3>
+                        <p>Tenha total visão sobre as categorias, preços e disponibilidade dos seus produtos no sistema.</p>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="carousel-slide">
+                    <img src="assets/img4.png" alt="Cadastro de Produto">
+                    <div class="carousel-caption">
+                        <h3>Cadastro Inteligente</h3>
+                        <p>Adicione itens e defina o setor de preparo (Cozinha ou Bar) para impressão automática correta.</p>
+                    </div>
+                </div>
+                <!-- Slide 5 -->
+                <div class="carousel-slide">
+                    <img src="assets/img5.png" alt="Gerenciar Mesas">
+                    <div class="carousel-caption">
+                        <h3>Painel de Mesas</h3>
+                        <p>Visualize todas as mesas do estabelecimento e gere QR Codes para cada uma com um clique.</p>
+                    </div>
+                </div>
+                <!-- Slide 6 -->
+                <div class="carousel-slide">
+                    <img src="assets/img6.png" alt="Terminal do Garçom">
+                    <div class="carousel-caption">
+                        <h3>Terminal do Garçom (Celular)</h3>
+                        <p>O garçom acessa do próprio celular a lista de mesas disponíveis, prontas para atendimento.</p>
+                    </div>
+                </div>
+                <!-- Slide 7 -->
+                <div class="carousel-slide">
+                    <img src="assets/img7.png" alt="Abrir Comanda">
+                    <div class="carousel-caption">
+                        <h3>Abrir Comanda com 1 Toque</h3>
+                        <p>Selecione a mesa e abra a comanda instantaneamente. Simples e rápido para qualquer garçom.</p>
+                    </div>
+                </div>
+                <!-- Slide 8 -->
+                <div class="carousel-slide">
+                    <img src="assets/img8.png" alt="Lançar Pedido">
+                    <div class="carousel-caption">
+                        <h3>Lançamento Fácil por Categoria</h3>
+                        <p>Interface intuitiva com filtros por categoria (Porções, Bebidas, Cervejas...) para agilizar o pedido.</p>
+                    </div>
+                </div>
+                <!-- Slide 9 -->
+                <div class="carousel-slide">
+                    <img src="assets/img9.png" alt="Selecionar Produto">
+                    <div class="carousel-caption">
+                        <h3>Cardápio Sempre Atualizado</h3>
+                        <p>O garçom vê os produtos com nome e preço em tempo real, exatamente como cadastrado pelo administrador.</p>
+                    </div>
+                </div>
+                <!-- Slide 10 -->
+                <div class="carousel-slide">
+                    <img src="assets/img10.png" alt="Carrinho de Itens">
+                    <div class="carousel-caption">
+                        <h3>Revise Antes de Enviar</h3>
+                        <p>Monte a lista de itens anotados, remova o que precisar e envie tudo de uma vez para a cozinha.</p>
+                    </div>
+                </div>
+                <!-- Slide 11 -->
+                <div class="carousel-slide">
+                    <img src="assets/img11.png" alt="Aguardando Impressão">
+                    <div class="carousel-caption">
+                        <h3>Integração com Cozinha/Bar</h3>
+                        <p>Após enviar, o sistema notifica o caixa e dispara a impressão automática para o setor de preparo.</p>
+                    </div>
+                </div>
+                <!-- Slide 12 -->
+                <div class="carousel-slide">
+                    <img src="assets/img12.png" alt="Status da Mesa">
+                    <div class="carousel-caption">
+                        <h3>Status Visual das Mesas</h3>
+                        <p>O painel atualiza as cores: Verde (Livre), Laranja (Aguardando Pagamento). Controle total na palma da mão.</p>
+                    </div>
+                </div>
+                <!-- Slide 13 -->
+                <div class="carousel-slide">
+                    <img src="assets/img13.png" alt="Comanda Impressa">
+                    <div class="carousel-caption">
+                        <h3>Comanda Impressa!</h3>
+                        <p>O garçom é notificado no celular assim que a comanda é impressa. Hora de levar ao cliente para o pagamento.</p>
+                    </div>
+                </div>
+                <!-- Slide 14 -->
+                <div class="carousel-slide">
+                    <img src="assets/img14.png" alt="Confirmar Pagamento">
+                    <div class="carousel-caption">
+                        <h3>Confirmação de Pagamento</h3>
+                        <p>Com um clique o caixa confirma o pagamento, a mesa volta ao verde (Livre) e está pronta para o próximo cliente.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-btn carousel-prev" onclick="moveSlide(-1)">❮</button>
+            <button class="carousel-btn carousel-next" onclick="moveSlide(1)">❯</button>
+            
+            <div class="carousel-dots" id="carousel-dots">
+                <div class="dot active" onclick="goToSlide(0)"></div>
+                <div class="dot" onclick="goToSlide(1)"></div>
+                <div class="dot" onclick="goToSlide(2)"></div>
+                <div class="dot" onclick="goToSlide(3)"></div>
+                <div class="dot" onclick="goToSlide(4)"></div>
+                <div class="dot" onclick="goToSlide(5)"></div>
+                <div class="dot" onclick="goToSlide(6)"></div>
+                <div class="dot" onclick="goToSlide(7)"></div>
+                <div class="dot" onclick="goToSlide(8)"></div>
+                <div class="dot" onclick="goToSlide(9)"></div>
+                <div class="dot" onclick="goToSlide(10)"></div>
+                <div class="dot" onclick="goToSlide(11)"></div>
+                <div class="dot" onclick="goToSlide(12)"></div>
+                <div class="dot" onclick="goToSlide(13)"></div>
+            </div>
+        </div>
+
+        <div class="offer-section">
+            <div class="scarcity-text">
+                <i class="ph-fill ph-warning-circle"></i> Atenção: Esta oferta encerra em breve!
+            </div>
+
+            <!-- Cronômetro -->
+            <div class="countdown" id="countdown">
+                <div class="time-box"><span id="horas">02</span><label>Horas</label></div>
+                <div class="time-box"><span id="minutos">15</span><label>Minutos</label></div>
+                <div class="time-box"><span id="segundos">30</span><label>Segundos</label></div>
+            </div>
+
+            <div class="price-box">
+                <div class="price-old">De R$ 59,90</div>
+                <div class="price-new"><small>Por apenas R$</small>29,90</div>
+            </div>
+
+            <a href="https://checkout.infinitepay.io/sysmatic/JxzWEEAASJ" target="_blank" class="cta-button">
+                Quero Garantir Meu Acesso Agora
+            </a>
+            <span class="cta-subtext">Compra 100% Segura e Acesso Imediato. Licença Vitalícia!</span>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">Por que escolher o Quiosque PDV?</h2>
+        <div class="grid">
+            <div class="feature-card">
+                <i class="ph-fill ph-device-mobile feature-icon"></i>
+                <h3>Atendimento via Celular</h3>
+                <p>Seus garçons tiram o pedido direto na mesa usando qualquer smartphone. A tela é intuitiva e o pedido cai na mesma hora no caixa.</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph-fill ph-printer feature-icon"></i>
+                <h3>Impressão Automática</h3>
+                <p>Não precisa gritar a comanda! Assim que o garçom anota no celular, o pedido é impresso sozinho na cozinha e no bar simultaneamente.</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph-fill ph-wifi-slash feature-icon"></i>
+                <h3>100% Offline (Local)</h3>
+                <p>A internet caiu? O sistema não para! O Quiosque PDV funciona perfeitamente apenas com a rede Wi-Fi local do seu estabelecimento, sem depender da operadora.</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph-fill ph-chart-bar feature-icon"></i>
+                <h3>Relatórios e Fechamentos</h3>
+                <p>Saiba exatamente quanto vendeu, quais itens saem mais, calcule automaticamente os 10% do garçom e tenha o ranking de quem mais vendeu no dia.</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph-fill ph-qr-code feature-icon"></i>
+                <h3>Sistema de Mesas com QR Code</h3>
+                <p>Gere e imprima QR Codes exclusivos para cada mesa. Acompanhe pelo painel visual as mesas livres (Verde), ocupadas (Vermelho) e aguardando pagamento (Amarelo).</p>
+            </div>
+            <div class="feature-card">
+                <i class="ph-fill ph-lightning feature-icon"></i>
+                <h3>Zero Mensalidades</h3>
+                <p>Não pague taxas absurdas todo mês. Você paga o valor promocional uma única vez e o sistema é seu para sempre, sem custos ocultos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTAs Finais -->
+    <section style="text-align:center; padding: 4rem 2rem; background: var(--card-bg);">
+        <h2 style="font-size:2rem; font-family:'Outfit', sans-serif; margin-bottom: 2rem;">Pronto para revolucionar seu atendimento?</h2>
+        <a href="https://checkout.infinitepay.io/sysmatic/JxzWEEAASJ" target="_blank" class="cta-button">
+            Quero Comprar por R$ 29,90
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Sismatic - Todos os direitos reservados.</p>
+        <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.5;">Este site não faz parte do site do Facebook ou Facebook Inc. Além disso, este site não é endossado pelo Facebook de nenhuma maneira. FACEBOOK é uma marca comercial da FACEBOOK, Inc.</p>
+    </footer>
+
+    <style>
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <!-- Botão Flutuante WhatsApp -->
+    <a href="https://wa.me/5517997812145?text=Ol%C3%A1%21%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20Quiosque%20PDV." class="whatsapp-float" target="_blank" title="Falar no WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" width="30" height="30">
+          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+    </a>
+
+    <!-- Script do Cronômetro de Escassez e Carrossel -->
+    <script>
+        // --- Lógica do Carrossel com Auto-Play ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+        const carousel = document.getElementById('carousel');
+        const totalSlides = slides.length;
+        let autoPlayInterval;
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateCarousel();
+            resetAutoPlay();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+            resetAutoPlay();
+        }
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateCarousel();
+            }, 4000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            startAutoPlay();
+        }
+
+        // Pausa ao passar o mouse por cima
+        document.getElementById('carouselWrapper').addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        document.getElementById('carouselWrapper').addEventListener('mouseleave', () => startAutoPlay());
+
+        // Inicia o auto-play
+        startAutoPlay();
+        // --- Lógica do Cronômetro ---
+        let timeRemaining;
+        
+        if (sessionStorage.getItem('countdownTime')) {
+            timeRemaining = parseInt(sessionStorage.getItem('countdownTime'));
+        } else {
+            timeRemaining = 7200 + 900 + 30; // 2h 15m 30s
+        }
+
+        const elHoras = document.getElementById('horas');
+        const elMinutos = document.getElementById('minutos');
+        const elSegundos = document.getElementById('segundos');
+
+        function updateCountdown() {
+            if (timeRemaining <= 0) {
+                timeRemaining = 0;
+            } else {
+                timeRemaining--;
+                sessionStorage.setItem('countdownTime', timeRemaining);
+            }
+
+            const h = Math.floor(timeRemaining / 3600);
+            const m = Math.floor((timeRemaining % 3600) / 60);
+            const s = timeRemaining % 60;
+
+            elHoras.textContent = String(h).padStart(2, '0');
+            elMinutos.textContent = String(m).padStart(2, '0');
+            elSegundos.textContent = String(s).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
